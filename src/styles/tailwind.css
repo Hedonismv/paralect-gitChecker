@@ -1,5 +1,7 @@
 @tailwind base;
-
+body{
+    background-color:#F9F9F9;
+}
 /* Your own custom base styles */
 
 /* Start purging... */
