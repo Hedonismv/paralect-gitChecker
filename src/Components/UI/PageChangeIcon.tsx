@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import NextI from '../assets/i.svg';
+import NextI from '../../assets/i.svg';
 
 interface IconProps {
     className?: string

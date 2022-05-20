@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {IRepository} from "../types/Types";
 import axios from "axios";
 
-const UsePaginateFetch = (page: number | null, username: string | null | undefined) => {
+const UsePaginateFetch = (page:  number | null = 1, username: string | null | undefined) => {
     const [repoData, setRepoData] = useState<IRepository[] | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [isError, setIsError] = useState<boolean>(false)
@@ -17,7 +17,10 @@ const UsePaginateFetch = (page: number | null, username: string | null | undefin
                     setRepoData(res.data)
                     setIsLoading(false)
                 })
-                .catch(err => setIsError(true))
+                .catch(err => {
+                    setIsError(true)
+                    setIsLoading(false)
+                })
         }
     }, [page, username])
 

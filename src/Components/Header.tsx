@@ -1,5 +1,6 @@
 import React, {FC, FormEvent, useState} from 'react';
-import GitLogo from '../assets/gitLogo.png';
+import GitLogo from '../assets/gitLogo.svg';
+import InputSearchIcon from '../assets/inputSearch.svg';
 
 interface HeaderProps {
     setUsername: (username: string) => void
@@ -16,17 +17,19 @@ const Header:FC<HeaderProps> = ({setUsername}) => {
     }
 
     return (
-        <div className={`w-full bg-header h-[72px] flex items-center justify-center`}>
-            <div className={'container flex'}>
+        <div className={`w-full bg-header h-header-size flex items-center justify-center`}>
+            <div className={'md:container flex'}>
                 <div className={'flex'}>
-                    <div><img src={GitLogo} width={'100%'} alt={'git-icon'}/></div>
+                    <div><img src={GitLogo} width={'40px'} alt={'git-icon'}/></div>
                     <div className={'ml-5'}>
-                        <form onSubmit={event => handleSubmit(event)}>
+                        <form className={'relative'} onSubmit={event => handleSubmit(event)}>
+                            <img alt={'search-icon'} src={InputSearchIcon} className={'absolute box-border pl-3 py-2'}/>
                             <input
                                 type={'text'}
+                                placeholder={'Enter GitHub username'}
                                 value={inputUsername}
                                 onChange={(event) => setInputUsername(event.target.value)}
-                                className={'w-[500px] h-[40px] rounded-md'}
+                                className={'w-full md:w-[500px] h-[40px] pr-5 rounded-md box-border pl-12 md:text-base font-light outline-0'}
                             />
                             <input type={"submit"} hidden={true}/>
                         </form>

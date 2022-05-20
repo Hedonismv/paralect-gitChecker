@@ -3,6 +3,10 @@ module.exports = {
     extend: {
         colors:{
             'header': '#0064EB',
+            'secondary': '#808080'
+        },
+        height:{
+            'header-size': '72px'
         }
     },
   },

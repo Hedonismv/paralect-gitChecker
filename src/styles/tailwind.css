@@ -12,6 +12,12 @@ body{
 
 /* Start purging... */
 @tailwind utilities;
+
+@layer base {
+    html{
+        font-family: Inter, sans-serif;
+    }
+}
 /* Stop purging. */
 
 /* Your own custom utilities */

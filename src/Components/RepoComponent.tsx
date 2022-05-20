@@ -1,9 +1,9 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useMemo, useState} from 'react';
 import RepositoryList from "./RepositoryList";
-import Spinner from "./Spinner";
-import usePaginateFetch from "../hooks/usePaginateFetch";
 import ReactPaginate from "react-paginate";
-import NextIcon from "./PageChangeIcon";
+import NextIcon from "./UI/PageChangeIcon";
+import NullRepository from "./Handlers/NullRepository";
+import {calcRepos} from "../utils/helpers";
 
 interface RepoComponentProps {
     username: string | null | undefined,
@@ -12,38 +12,46 @@ interface RepoComponentProps {
 
 const RepoComponent:FC<RepoComponentProps> = ({username, totalRepo}) => {
 
-    const [currentPage, setCurrentPage] = useState<number>(1)
+    const [page, setPage] = useState(1)
 
-    const {isLoading, repoData, isError} = usePaginateFetch(1, username)
+    const handlePage = (event: any) => {
+        const page = event.selected + 1
+        setPage(page)
+    }
 
-    if(isLoading){
-        return (
-            <Spinner/>
-        )
-    }
-    if(isError){
-        return (
-            <Spinner/>
-        )
-    }
+    const reposRange = useMemo(() => {
+        return calcRepos(totalRepo!, page)
+    }, [totalRepo, page])
+
 
     return (
-        <div className={'w-[70%]'}>
-            <h2 className={'text-3xl mt-10 font-bold'}>Repositories({totalRepo})</h2>
-            <RepositoryList repoData={repoData}/>
-            <div className={'flex flex-row'}>
-                <div>
-
-                </div>
-                <ReactPaginate
-                    className={'flex flex-row items-center'}
-                    pageCount={Math.ceil(totalRepo! / 4)}
-                    breakLabel={'...'}
-                    pageRangeDisplayed={2}
-                    previousLabel={<NextIcon className={'rotate-180'}/>}
-                    nextLabel={<NextIcon/>}
-                />
-            </div>
+        <div className={'w-full md:ml-5 md:w-[70%]'}>
+            {!totalRepo
+                ? <NullRepository/>
+                :
+                <>
+                    <h2 className={'text-3xl mt-10 font-semibold'}>Repositories({totalRepo})</h2>
+                    <RepositoryList
+                        username={username}
+                        currentPage={page}
+                    />
+                    <div className={'flex flex-col md:flex-row justify-center md:justify-end items-center gap-4 md:gap-8'}>
+                        <div>
+                            <span className={'text-secondary font-light'}>{reposRange} of {totalRepo} items</span>
+                        </div>
+                        <ReactPaginate
+                            className={'flex flex-row items-center gap-2.5 text-secondary'}
+                            pageCount={Math.ceil(totalRepo! / 4)}
+                            breakLabel={'...'}
+                            pageRangeDisplayed={2}
+                            activeClassName={'bg-header text-white py-0.5 px-2 rounded-sm'}
+                            previousLabel={<NextIcon className={'rotate-180'}/>}
+                            nextLabel={<NextIcon/>}
+                            onPageChange={handlePage}
+                        />
+                    </div>
+                </>
+            }
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import axios from "axios";
 import {IUser} from "../types/Types";
 
@@ -10,11 +10,13 @@ const UseFetch = (username:string) => {
 
     useEffect(() => {
         setIsLoading(true)
-        setUserData(null)
         setIsError(false)
+        setUserData(null)
         if(username === ''){
             setIsInitial(true)
+            setIsLoading(false)
         }else{
+            setIsLoading(true)
             axios.get(`https://api.github.com/users/${username}`)
                 .then(res => {
                     setUserData(res.data)
